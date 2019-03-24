@@ -5,10 +5,12 @@ module Music
       'print_result' => 'Unknown command, please try again'
     }
 
-    attr_accessor :result, :input, :prompt
+    attr_accessor :result, :input, :executors, :prompt
 
     def initialize
       @prompt = '> '
+      @executors = []
+      @executors << Music::Add
     end
 
     # Loops shell until user exits
@@ -33,6 +35,10 @@ module Music
     # Sets @result to result of evaling input and print unexpected errors
     def interpret(input)
       @result = []
+      @executors.each do |executor|
+        executors_responses = executor.interpret(input)
+        @result = @result.concat(executors_responses)
+      end
     end
 
     # @return [String, nil] Prints #prompt and returns input given by user

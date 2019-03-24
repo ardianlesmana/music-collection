@@ -6,6 +6,8 @@ end
 require 'music/shell'
 require 'music/runner'
 require 'music/add'
+require 'music/show'
+require 'music/play'
 require 'music/album'
 require 'music/collection'
 require 'music/errors'

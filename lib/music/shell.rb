@@ -9,8 +9,11 @@ module Music
 
     def initialize
       @prompt = '> '
+
       @executors = []
       @executors << Music::Add
+      @executors << Music::Show
+      @executors << Music::Play
     end
 
     # Loops shell until user exits
@@ -32,6 +35,7 @@ module Music
 
     # Handles interrupt (Control-C) by printing a newline
     def handle_interrupt() puts end
+
     # Sets @result to result of evaling input and print unexpected errors
     def interpret(input)
       @result = []
@@ -46,6 +50,7 @@ module Music
       print prompt
       (input = $stdin.gets) ? input.chomp : input
     end
+
     # Prints result using #format_result
     def print_result(result)
       unless result.empty?
@@ -54,6 +59,7 @@ module Music
         print_line([MESSAGES['print_result']])
       end
     end
+
     # Prints with surrounding lines
     def print_line(arr)
       puts($/, *arr, $/)

@@ -13,7 +13,9 @@ module Music
 
     # Loops shell until user exits
     def loop
+      print_line ['Welcome to your music collection!']
       catch(:music_exit) { loop_once while(true) }
+      print_line ['Bye!']
     end
 
     # Runs through one loop iteration: gets input, evals and prints result
@@ -21,9 +23,13 @@ module Music
       @input = get_input
       throw(:music_exit) if EXIT_WORDS.include?(@input)
       interpret(@input)
-      puts @result
+      print_result(@result) unless @input.empty?
+    rescue Interrupt
+      handle_interrupt
     end
 
+    # Handles interrupt (Control-C) by printing a newline
+    def handle_interrupt() puts end
     # Sets @result to result of evaling input and print unexpected errors
     def interpret(input)
       @result = []
@@ -33,6 +39,18 @@ module Music
     def get_input
       print prompt
       (input = $stdin.gets) ? input.chomp : input
+    end
+    # Prints result using #format_result
+    def print_result(result)
+      unless result.empty?
+        print_line(result)
+      else
+        print_line([MESSAGES['print_result']])
+      end
+    end
+    # Prints with surrounding lines
+    def print_line(arr)
+      puts($/, *arr, $/)
     end
   end
 end
